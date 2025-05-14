@@ -159,6 +159,24 @@ body.dark-mode .nav-links li a {
     opacity: 1;
 }
 
+/* Home icon styling for navigation */
+.nav-links li a.home-icon::before {
+    content: '🏠'; /* Home icon emoji */
+    font-size: 0.8em;
+    position: absolute;
+    left: -15px;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+.nav-links li a.home-icon:hover::before,
+.nav-links li a.home-icon.active::before {
+    opacity: 1;
+    color: var(--field-green);
+}
+
 /* Hamburger menu button */
 .hamburger {
     display: none;
@@ -521,6 +539,7 @@ body.dark-mode #matchSubmitBtn:hover {
 /* Output areas with pitch-like texture */
 #output, #match-output {
     padding: 25px;
+    padding-bottom: 60px; /* Added to ensure space for back-to-top button */
     border-radius: var(--border-radius);
     box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.15);
     background: rgba(255, 255, 255, 0.95) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><rect x="0" y="45" width="100" height="10" fill="#22c55e" opacity="0.1"/></svg>') repeat;
@@ -533,6 +552,23 @@ body.dark-mode #output,
 body.dark-mode #match-output {
     background: rgba(55, 65, 81, 0.95) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><rect x="0" y="45" width="100" height="10" fill="#b91c1c" opacity="0.1"/></svg>') repeat;
     color: var(--text-light);
+}
+
+/* Chased/Defended percentages styling */
+#output p:last-of-type,
+#match-output p#matchProbability {
+    font-weight: 600;
+    font-size: 1.1em;
+    margin-top: 15px;
+    padding: 10px;
+    border-radius: var(--border-radius);
+    background: rgba(34, 197, 94, 0.1); /* Subtle green background for percentages */
+    display: inline-block;
+}
+
+body.dark-mode #output p:last-of-type,
+body.dark-mode #match-output p#matchProbability {
+    background: rgba(185, 28, 28, 0.1); /* Subtle red background for dark mode */
 }
 
 /* Table styling with cricket-themed highlights */
@@ -575,15 +611,16 @@ body.dark-mode th {
     background: var(--ball-red);
 }
 
+/* Remove alternating row colors for plain backgrounds in Match Analyzer and Chase Analyzer */
 tr:nth-child(even) {
-    background: rgba(243, 244, 246, 0.5);
+    background: none; /* Plain background for all rows */
 }
 
 body.dark-mode tr:nth-child(even) {
-    background: rgba(75, 85, 99, 0.5);
+    background: none; /* Plain background for all rows in dark mode */
 }
 
-/* Highlighted rows with cricket-inspired colors */
+/* Highlighted rows with cricket-inspired colors for Chase Analyzer */
 .highlight-match {
     background: rgba(245, 158, 11, 0.3) !important;
     color: var(--text-dark) !important;
@@ -593,7 +630,7 @@ body.dark-mode .highlight-match {
     background: rgba(185, 28, 28, 0.3) !important;
 }
 
-/* Over-specific highlights with cricket-inspired colors */
+/* Match Analyzer: Over-specific highlights for scores (runs only match) */
 .match-6ov { background: rgba(59, 130, 246, 0.2); }
 .match-10ov { background: rgba(34, 197, 94, 0.2); }
 .match-15ov { background: rgba(245, 158, 11, 0.2); }
@@ -605,113 +642,68 @@ body.dark-mode .highlight-match {
 .match-20-10 { background: rgba(163, 230, 53, 0.2); }
 .match-20-15 { background: rgba(249, 115, 22, 0.2); }
 
-body.dark-mode .match-6ov { background: rgba(59, 130, 246, 0.4); }
-body.dark-mode .match-10ov { background: rgba(34, 197, 94, 0.4); }
-body.dark-mode .match-15ov { background: rgba(245, 158, 11, 0.4); }
-body.dark-mode .match-20ov { background: rgba(236, 72, 153, 0.4); }
-body.dark-mode .match-10-6 { background: rgba(251, 146, 60, 0.4); }
-body.dark-mode .match-15-10 { background: rgba(74, 222, 128, 0.4); }
-body.dark-mode .match-15-6 { background: rgba(124, 58, 237, 0.4); }
-body.dark-mode .match-20-6 { background: rgba(45, 212, 191, 0.4); }
-body.dark-mode .match-20-10 { background: rgba(163, 230, 53, 0.4); }
-body.dark-mode .match-20-15 { background: rgba(249, 115, 22, 0.4); }
+/* Match Analyzer: Exact matches (both runs and wickets match) with gradient */
+.match-6ov-wickets { background: linear-gradient(to right, #1e40af, #60a5fa); }
+.match-10ov-wickets { background: linear-gradient(to right, #16a34a, #4ade80); }
+.match-15ov-wickets { background: linear-gradient(to right, #d97706, #fbbf24); }
+.match-20ov-wickets { background: linear-gradient(to right, #db2777, #f472b6); }
+.match-10-6-wickets { background: linear-gradient(to right, #ea580c, #fb923c); }
+.match-15-10-wickets { background: linear-gradient(to right, #16a34a, #6ee7b7); }
+.match-15-6-wickets { background: linear-gradient(to right, #7c3aed, #a78bfa); }
+.match-20-6-wickets { background: linear-gradient(to right, #0d9488, #5eead4); }
+.match-20-10-wickets { background: linear-gradient(to right, #65a30d, #a3e635); }
+.match-20-15-wickets { background: linear-gradient(to right, #ea580c, #fb923c); }
 
-/* Wicket highlights with cricket ball gradients */
-.match-6ov-wickets { background: linear-gradient(to right, #b91c1c 50%, rgba(59, 130, 246, 0.2) 50%); }
-.match-10ov-wickets { background: linear-gradient(to right, #b91c1c 50%, rgba(34, 197, 94, 0.2) 50%); }
-.match-15ov-wickets { background: linear-gradient(to right, #b91c1c 50%, rgba(245, 158, 11, 0.2) 50%); }
-.match-20ov-wickets { background: linear-gradient(to right, #b91c1c 50%, rgba(236, 72, 153, 0.2) 50%); }
-.match-10-6-wickets { background: linear-gradient(to right, #b91c1c 50%, rgba(251, 146, 60, 0.2) 50%); }
-.match-15-10-wickets { background: linear-gradient(to right, #b91c1c 50%, rgba(74, 222, 128, 0.2) 50%); }
-.match-15-6-wickets { background: linear-gradient(to right, #b91c1c 50%, rgba(124, 58, 237, 0.2) 50%); }
-.match-20-6-wickets { background: linear-gradient(to right, #b91c1c 50%, rgba(45, 212, 191, 0.2) 50%); }
-.match-20-10-wickets { background: linear-gradient(to right, #b91c1c 50%, rgba(163, 230, 53, 0.2) 50%); }
-.match-20-15-wickets { background: linear-gradient(to right, #b91c1c 50%, rgba(249, 115, 22, 0.2) 50%); }
+/* Dark mode adjustments for highlights */
+body.dark-mode .match-6ov { background: rgba(59, 130, 246, 0.3); }
+body.dark-mode .match-10ov { background: rgba(34, 197, 94, 0.3); }
+body.dark-mode .match-15ov { background: rgba(245, 158, 11, 0.3); }
+body.dark-mode .match-20ov { background: rgba(236, 72, 153, 0.3); }
+body.dark-mode .match-10-6 { background: rgba(251, 146, 60, 0.3); }
+body.dark-mode .match-15-10 { background: rgba(74, 222, 128, 0.3); }
+body.dark-mode .match-15-6 { background: rgba(124, 58, 237, 0.3); }
+body.dark-mode .match-20-6 { background: rgba(45, 212, 191, 0.3); }
+body.dark-mode .match-20-10 { background: rgba(163, 230, 53, 0.3); }
+body.dark-mode .match-20-15 { background: rgba(249, 115, 22, 0.3); }
 
-body.dark-mode .match-6ov-wickets { background: linear-gradient(to right, #7f1d1d 50%, rgba(59, 130, 246, 0.4) 50%); }
-body.dark-mode .match-10ov-wickets { background: linear-gradient(to right, #7f1d1d 50%, rgba(34, 197, 94, 0.4) 50%); }
-body.dark-mode .match-15ov-wickets { background: linear-gradient(to right, #7f1d1d 50%, rgba(245, 158, 11, 0.4) 50%); }
-body.dark-mode .match-20ov-wickets { background: linear-gradient(to right, #7f1d1d 50%, rgba(236, 72, 153, 0.4) 50%); }
-body.dark-mode .match-10-6-wickets { background: linear-gradient(to right, #7f1d1d 50%, rgba(251, 146, 60, 0.4) 50%); }
-body.dark-mode .match-15-10-wickets { background: linear-gradient(to right, #7f1d1d 50%, rgba(74, 222, 128, 0.4) 50%); }
-body.dark-mode .match-15-6-wickets { background: linear-gradient(to right, #7f1d1d 50%, rgba(124, 58, 237, 0.4) 50%); }
-body.dark-mode .match-20-6-wickets { background: linear-gradient(to right, #7f1d1d 50%, rgba(45, 212, 191, 0.4) 50%); }
-body.dark-mode .match-20-10-wickets { background: linear-gradient(to right, #7f1d1d 50%, rgba(163, 230, 53, 0.4) 50%); }
-body.dark-mode .match-20-15-wickets { background: linear-gradient(to right, #7f1d1d 50%, rgba(249, 115, 22, 0.4) 50%); }
-
-/* Filter group with cricket pitch styling */
+/* Filter group styling */
 .filter-group {
     display: flex;
-    gap: 15px;
     flex-wrap: wrap;
-    padding: 15px;
-    border-radius: var(--border-radius);
-    background: rgba(255, 255, 255, 0.9);
-    border: 1px solid var(--field-green);
-}
-
-body.dark-mode .filter-group {
-    background: rgba(55, 65, 81, 0.9);
-    border: 1px solid var(--ball-red);
-}
-
-/* Modal styling with stadium-like overlay */
-.modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.8);
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-}
-
-.modal-content {
-    padding: 25px;
-    border-radius: var(--border-radius);
-    max-width: 95%;
-    max-height: 85vh;
-    overflow-y: auto;
-    box-shadow: var(--shadow);
-    background: rgba(255, 255, 255, 0.95);
-    color: var(--text-dark);
-    position: relative;
-}
-
-body.dark-mode .modal-content {
-    background: rgba(31, 41, 55, 0.95);
-    color: var(--text-light);
-}
-
-.modal-content h2 {
-    font-family: 'Montserrat', sans-serif;
-    color: var(--cricket-blue);
-}
-
-body.dark-mode .modal-content h2 {
-    color: var(--text-light);
-}
-
-.year-checkbox-label {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin: 10px 0;
-    font-size: 1em;
-    cursor: pointer;
-}
-
-.modal-buttons {
-    margin-top: 20px;
-    display: flex;
     gap: 15px;
-    justify-content: flex-end;
+    margin-bottom: 20px;
+    align-items: center;
 }
 
-/* Back to top button with cricket ball icon */
+.filter-group label {
+    margin: 0;
+    font-size: 0.9em;
+}
+
+.filter-group select {
+    width: auto;
+    min-width: 150px;
+}
+
+.year-filter-btn {
+    background: var(--stump-gold);
+    color: var(--text-dark);
+    padding: 8px 16px;
+}
+
+body.dark-mode .year-filter-btn {
+    background: #fbbf24;
+}
+
+.year-filter-btn:hover {
+    background: #d97706;
+}
+
+body.dark-mode .year-filter-btn:hover {
+    background: #f59e0b;
+}
+
+/* Back to top button */
 .back-to-top {
     position: fixed;
     bottom: 20px;
@@ -729,192 +721,227 @@ body.dark-mode .modal-content h2 {
 
 body.dark-mode .back-to-top {
     background: var(--ball-red);
-    color: var(--text-light);
-}
-
-.back-to-top::before {
-    content: '⚾';
-    margin-right: 8px;
 }
 
 .back-to-top:hover {
     background: #1d4ed8;
-    transform: translateY(-3px);
 }
 
 body.dark-mode .back-to-top:hover {
     background: #991b1b;
 }
 
+/* Modal styling */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    overflow: auto;
+}
+
+.modal-content {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 25px;
+    border-radius: var(--border-radius);
+    width: 90%;
+    max-width: 1200px;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: var(--shadow);
+    border: 2px solid var(--cricket-blue);
+}
+
+body.dark-mode .modal-content {
+    background: rgba(55, 65, 81, 0.95);
+    border: 2px solid var(--ball-red);
+}
+
+.close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 1.5em;
+    cursor: pointer;
+    color: var(--text-dark);
+}
+
+body.dark-mode .close-btn {
+    color: var(--text-light);
+}
+
+.close-btn:hover {
+    color: var(--field-green);
+}
+
+body.dark-mode .close-btn:hover {
+    color: #b91c1c;
+}
+
+#yearCheckboxes, #matchYearCheckboxes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.year-checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.9em;
+    color: var(--text-dark);
+}
+
+body.dark-mode .year-checkbox-label {
+    color: var(--text-light);
+}
+
+.year-checkbox-label input {
+    width: auto;
+}
+
 /* Animations */
+@keyframes ballSpin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
 @keyframes cricketPattern {
     0% { background-position: 0 0; }
     100% { background-position: 100px 100px; }
 }
 
 @keyframes stadiumPulse {
-    0% { background-position: center; }
-    50% { background-position: center 105%; }
-    100% { background-position: center; }
+    0%, 100% { background-size: 100% 100%; }
+    50% { background-size: 105% 105%; }
 }
 
 @keyframes fadeIn {
-    0% { opacity: 0; transform: translateY(20px); }
-    100% { opacity: 1; transform: translateY(0); }
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes ballSpin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-/* Responsive design */
+/* Responsive Design */
 @media (max-width: 768px) {
-    .hamburger {
-        display: block;
-    }
-    .nav-links {
-        display: none; /* Hidden by default */
+    .navbar {
         flex-direction: column;
-        align-items: center;
+        align-items: flex-start;
+    }
+
+    .nav-links {
+        display: none;
         width: 100%;
-        background: rgba(255, 255, 255, 0.95);
-        padding: 15px 0;
-        border-radius: var(--border-radius);
-        box-shadow: var(--shadow);
+        flex-direction: column;
+        gap: 10px;
         margin-top: 10px;
     }
-    body.dark-mode .nav-links {
-        background: rgba(31, 41, 55, 0.95);
-    }
+
     .nav-links.active {
-        display: flex; /* Show when active */
+        display: flex;
     }
+
     .nav-links li a {
-        padding: 12px 20px;
-        font-size: 1.1em;
+        padding: 10px;
         width: 100%;
         text-align: center;
     }
-    .navbar {
-        flex-direction: row;
-        align-items: center;
-        padding: 8px 15px;
+
+    .hamburger {
+        display: block;
+        align-self: flex-end;
     }
-    .logo h1 {
-        font-size: 1.5em;
+
+    .theme-toggle {
+        margin-top: 10px;
     }
-    .theme-toggle select {
-        padding: 6px 30px 6px 10px;
-        font-size: 0.8em;
-    }
-    .hero {
-        padding: 50px 15px;
-        padding-top: 60px; /* Offset for sticky header */
-    }
+
     .hero h2 {
         font-size: 2em;
     }
+
     .hero p {
         font-size: 1em;
     }
-    .container {
-        padding: 15px;
-        margin: 10px;
-        padding-top: 60px; /* Offset for sticky header */
+
+    .features h3 {
+        font-size: 1.8em;
     }
+
+    .feature h4 {
+        font-size: 1.2em;
+    }
+
     .feature-grid {
         grid-template-columns: 1fr;
     }
-    .modal-content {
-        padding: 20px;
-        max-width: 98%;
+
+    .table-container {
+        font-size: 0.85em;
     }
-    .modal-content h2 {
-        font-size: 1.4em;
-    }
-    .year-checkbox-label {
-        font-size: 0.9em;
-    }
-    input, select, button {
-        padding: 10px;
-        font-size: 0.9em;
-    }
-    .button-group {
-        flex-direction: column;
-        align-items: stretch;
-    }
-    .button-group button {
-        width: 100%;
-    }
-    label {
-        font-size: 1em;
-        margin: 12px 0 6px;
-    }
+
     th, td {
-        font-size: 0.9em;
         padding: 8px;
     }
-    td:nth-child(6), th:nth-child(6),
-    td:nth-child(7), th:nth-child(7),
-    td:nth-child(8), th:nth-child(8),
-    td:nth-child(9), th:nth-child(9),
-    td:nth-child(10), th:nth-child(10),
-    td:nth-child(11), th:nth-child(11) {
-        display: none;
-    }
-    p, li, .feature p {
-        font-size: 0.9em;
-        line-height: 1.5;
-    }
-    .modal-content td:nth-child(n+6), .modal-content th:nth-child(n+6) {
-        display: none;
-    }
-    body.classic-mode {
-        background: linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7)),
-                    url('https://i.pinimg.com/480x/fe/61/9e/fe619edfcd7e59aeb3383032396ad7ca.jpg') center/cover fixed;
-    }
-    body.dark-mode {
-        background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
-                    url('https://thumbs.dreamstime.com/b/d-render-emptry-stadium-evening-d-render-emptry-stadium-evening-people-124769409.jpg') center/cover fixed;
-    }
-    .hero {
-        background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
-                    url('https://static.vecteezy.com/system/resources/thumbnails/026/389/471/small/football-stadium-with-the-stands-full-of-fans-waiting-for-the-game-3d-rendering-photo.jpg') center/cover no-repeat;
+
+    .modal-content {
+        width: 95%;
+        max-height: 85vh;
+        padding: 15px;
     }
 }
 
 @media (max-width: 480px) {
-    .hamburger {
-        font-size: 1.3em;
-    }
-    .nav-links li a {
-        font-size: 1em;
-        padding: 10px 15px;
-    }
     .logo h1 {
-        font-size: 1.3em;
+        font-size: 1.4em;
     }
-    .theme-toggle select {
-        padding: 5px 25px 5px 8px;
-        font-size: 0.7em;
+
+    .nav-links li a {
+        font-size: 0.9em;
     }
-    .hero {
-        padding: 40px 10px;
-        padding-top: 50px;
-    }
+
     .hero h2 {
-        font-size: 1.6em;
+        font-size: 1.5em;
     }
+
     .hero p {
         font-size: 0.9em;
     }
+
     .container {
-        padding-top: 50px;
-        margin: 8px;
-        padding: 12px;
+        margin: 10px;
+        padding: 15px;
     }
-    .table-container {
-        -webkit-overflow-scrolling: touch;
+
+    #output, #match-output {
+        padding: 15px;
+        padding-bottom: 60px; /* Ensure space for back-to-top button */
+        min-height: 200px;
+    }
+
+    .filter-group {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .filter-group select {
+        width: 100%;
+    }
+
+    button {
+        padding: 10px;
+        font-size: 0.9em;
+    }
+
+    .back-to-top {
+        padding: 8px 12px;
+        font-size: 0.8em;
     }
 }

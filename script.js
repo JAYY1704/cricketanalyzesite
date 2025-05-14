@@ -31,6 +31,15 @@ window.onload = function() {
             alert('Form submission requires a backend. Contact support@cricketanalyzer.com for now.');
         });
     }
+
+    // Initialize hamburger menu
+    const hamburger = document.querySelector('.hamburger');
+    const navLinks = document.querySelector('.nav-links');
+    if (hamburger && navLinks) {
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+    }
 };
 
 let chaseMatches = [];
@@ -143,7 +152,6 @@ function loadMatchData() {
         });
 }
 
-// Rest of the script remains unchanged
 function parseChaseScore(scoreWickets) {
     const parts = scoreWickets.split('/');
     if (parts.length !== 2) return [null, null];
@@ -183,7 +191,15 @@ function isMatchInMatchAnalyzer(chaseMatch) {
     return matchLastData.some(matchRow => {
         const chaseDetails = chaseMatch.originalMatch;
         const matchDetails = matchRow.match;
-        return Object.keys(chaseDetails).every(key => chaseDetails[key] === matchDetails[key]);
+        const overs = ['6over', '10over', '15over', '20over'];
+        return overs.every(over => {
+            const chaseScore = chaseDetails[over] || 'N/A';
+            const matchScore = matchDetails[over] || 'N/A';
+            if (chaseScore === 'N/A' || matchScore === 'N/A') return false;
+            const [chaseRuns, chaseWickets] = chaseScore.split('/').map(Number);
+            const [matchRuns, matchWickets] = matchScore.split('/').map(Number);
+            return chaseRuns === matchRuns && chaseWickets === matchWickets;
+        });
     });
 }
 
@@ -350,7 +366,7 @@ function processChaseInput() {
         html += '</tbody></table></div>';
 
         const probabilities = calculateChaseProbabilities(chaseLastData);
-        html += `<p>Probability of Chased: ${probabilities.chased}% | Probability of Defend: ${probabilities.defend}%</p>`;
+        html += `<p>Chased: ${probabilities.chased}% | Defended: ${probabilities.defend}%</p>`;
         html += '<button class="back-to-top" onclick="scrollChaseToTop()">Back to Top</button>';
     }
 
@@ -363,9 +379,8 @@ function generateChaseTableRows(data, over, runs, wickets) {
     let html = '';
     data.forEach(row => {
         const overKey = `${over}ov`;
-        const isMatch = over <= 20 && row[overKey] && row[overKey].split('/').map(Number)[0] === runs && row[overKey].split('/').map(Number)[1] === wickets;
         const isHighlighted = isMatchInMatchAnalyzer(row);
-        html += `<tr ${isMatch ? 'class="highlight"' : ''} ${isHighlighted ? 'class="highlight-match"' : ''}>`;
+        html += `<tr ${isHighlighted ? 'class="highlight-match"' : ''}>`;
         Object.entries(row).forEach(([key, value]) => {
             if (key !== 'originalMatch') html += `<td>${value}</td>`;
         });
@@ -391,8 +406,8 @@ function applyChaseFilters() {
     });
     document.getElementById('tableBody').innerHTML = generateChaseTableRows(filteredData, over, runs, wickets);
     const probabilities = calculateChaseProbabilities(filteredData);
-    document.getElementById('output').innerHTML = document.getElementById('output').innerHTML.split('<p>Probability')[0] + 
-        `<p>Probability of Chased: ${probabilities.chased}% | Probability of Defend: ${probabilities.defend}%</p>` +
+    document.getElementById('output').innerHTML = document.getElementById('output').innerHTML.split('<p>Chased')[0] + 
+        `<p>Chased: ${probabilities.chased}% | Defended: ${probabilities.defend}%</p>` +
         '<button class="back-to-top" onclick="scrollChaseToTop()">Back to Top</button>';
     document.getElementById('viewDetailsBtn').disabled = filteredData.length === 0;
     addChaseSortFunctionality();
@@ -696,25 +711,39 @@ function displayMatchResults(data) {
 
 function generateMatchTableRows(data) {
     return data.map(row => {
-        let rowClasses = [];
-        row.matchesAt.forEach(match => rowClasses.push(`match-${match.replace('over', 'ov')}`));
-        row.matchesWicketsAt.forEach(match => rowClasses.push(`match-${match.replace('over', 'ov')}-wickets`));
-        return `
-            <tr class="${rowClasses.join(' ')}">
-                <td>${row.match['year']}</td>
-                <td>${row['6over']}</td>
-                <td>${row['10over']}</td>
-                <td>${row['15over']}</td>
-                <td>${row['20over']}</td>
-                <td>${row['10-6']}</td>
-                <td>${row['15-10']}</td>
-                <td>${row['15-6']}</td>
-                <td>${row['20-6']}</td>
-                <td>${row['20-10']}</td>
-                <td>${row['20-15']}</td>
-                <td>${row['Result']}</td>
-            </tr>
-        `;
+        const cells = [];
+        // Year cell (no highlight)
+        cells.push(`<td>${row.match['year']}</td>`);
+
+        // Over cells (6ov, 10ov, 15ov, 20ov)
+        ['6over', '10over', '15over', '20over'].forEach(over => {
+            let cellClass = '';
+            const overKey = over.replace('over', 'ov');
+            if (row.matchesAt.includes(over)) {
+                cellClass = `match-${overKey}`;
+                if (row.matchesWicketsAt.includes(over)) {
+                    cellClass = `match-${overKey}-wickets`;
+                }
+            }
+            cells.push(`<td class="${cellClass}">${row[over] || 'N/A'}</td>`);
+        });
+
+        // Difference cells (10-6, 15-10, etc.)
+        ['10-6', '15-10', '15-6', '20-6', '20-10', '20-15'].forEach(diff => {
+            let cellClass = '';
+            if (row.matchesAt.includes(diff)) {
+                cellClass = `match-${diff}`;
+                if (row.matchesWicketsAt.includes(diff)) {
+                    cellClass = `match-${diff}-wickets`;
+                }
+            }
+            cells.push(`<td class="${cellClass}">${row[diff] || 'N/A'}</td>`);
+        });
+
+        // Result cell (no highlight)
+        cells.push(`<td>${row['Result']}</td>`);
+
+        return `<tr>${cells.join('')}</tr>`;
     }).join('');
 }
 
@@ -793,7 +822,7 @@ function applyMatchYearFilter() {
     applyMatchFilters();
 }
 
-function viewMatchFullMatchDetails() {
+function viewMatchFullDetails() {
     const modal = document.getElementById('matchFullDetailsModal');
     const outputDiv = document.getElementById('matchFullDetailsOutput');
     if (!matchLastData || matchLastData.length === 0) {
@@ -801,13 +830,10 @@ function viewMatchFullMatchDetails() {
         modal.style.display = 'flex';
         return;
     }
-    const yearCheckboxes = document.querySelectorAll('.match-year-checkbox:checked');
-    const selectedYears = Array.from(yearCheckboxes).map(cb => cb.value);
-    const matchFilter = document.getElementById('matchFilter').value;
-    const scoreRangeFilter = document.getElementById('matchScoreRangeFilter').value;
-
+    const matchFilter = document.getElementById('matchFilter') ? document.getElementById('matchFilter').value : '';
+    const scoreRangeFilter = document.getElementById('matchScoreRangeFilter') ? document.getElementById('matchScoreRangeFilter').value : '';
     const filteredData = matchLastData.filter(row => {
-        const yearMatch = selectedYears.length === 0 || selectedYears.includes(row.match['year']);
+        const yearMatch = matchSelectedYears.length === 0 || matchSelectedYears.includes(row.match['year']);
         const matchCountMatch = !matchFilter || row.matchCount >= parseInt(matchFilter);
         const rangeMatch = !scoreRangeFilter || (() => {
             const [runs] = (row['20over'] || '0/0').split('/').map(Number);
@@ -816,7 +842,6 @@ function viewMatchFullMatchDetails() {
         })();
         return yearMatch && matchCountMatch && rangeMatch;
     });
-
     if (filteredData.length === 0) {
         outputDiv.textContent = "No matches match the current filters.";
     } else {
