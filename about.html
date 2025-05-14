@@ -1,0 +1,123 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cricket Analyzer - About</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+</head>
+<body class="classic-mode">
+    <header>
+        <div class="navbar">
+            <div class="logo">
+                <h1>Cricket Analyzer</h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html" class="active">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="chase.html">Chase Analyzer</a></li>
+                <li><a href="match.html">Match Analyzer</a></li>
+            </ul>
+            <div class="theme-toggle">
+                <select id="themeSelect">
+                    <option value="classic-mode">Classic Mode</option>
+                    <option value="dark-mode">Dark Mode</option>
+                </select>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <section class="hero">
+                <h2>About Cricket Analyzer</h2>
+                <p>Empowering cricket fans and analysts with cutting-edge tools to dive deep into T20 match data.</p>
+            </section>
+
+            <section>
+                <h2>Our Mission</h2>
+                <p>Cricket Analyzer is built for enthusiasts, analysts, and strategists who live for the thrill of T20 cricket. Our platform leverages historical data to predict outcomes, uncover performance trends, and provide actionable insights. Whether you're a casual fan or a data-driven coach, we make cricket analytics accessible and engaging.</p>
+                <p>With a passion for the game, we aim to bridge the gap between raw data and meaningful analysis, helping you understand the nuances of every match.</p>
+            </section>
+
+            <section class="features">
+                <h3>What We Offer</h3>
+                <div class="feature-grid">
+                    <div class="feature">
+                        <h4>Chase Analyzer</h4>
+                        <p>Analyze real-time chasing scenarios by entering scores, wickets, and overs to explore historical outcomes and chase probabilities.</p>
+                    </div>
+                    <div class="feature">
+                        <h4>Match Analyzer</h4>
+                        <p>Track match progress at key overs (6, 10, 15, 20) to compare with historical matches and predict momentum shifts.</p>
+                    </div>
+                    <div class="feature">
+                        <h4>Comprehensive Data</h4>
+                        <p>Powered by T20 data from 2020 onward, covering all major leagues for relevant and accurate insights.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h2>How It Works</h2>
+                <h3>Cricket Chase Analyzer</h3>
+                <p>Enter the current score and wickets (e.g., "20/1"), select an over, and optionally choose a projected 20-over score range (e.g., 120-129). Submit to get insights on chase likelihood, historical trends for key overs (6, 10, 15, 20), and detailed match stats. View full match details or switch to the Match Analyzer.</p>
+                <h3>Cricket Match Analyzer</h3>
+                <p>Input scores and wickets at 6, 10, 15, and 20 overs (e.g., "50/2" at 10 overs). Submit to see performance trends, momentum shifts, or predicted outcomes based on historical data. Explore full match details or return to the Chase Analyzer.</p>
+            </section>
+
+            <section>
+                <h2>Our Data</h2>
+                <p>We analyze T20 match data from 2020 to the present across all major leagues. Starting from 2020 ensures relevance, capturing modern trends in T20 cricket for accurate predictions and comparisons.</p>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2025 Cricket Analyzer. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
