@@ -42,23 +42,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Analyze T20 cricket match progress with historical data.">
-    <meta name="keywords" content="cricket, match, analyzer, T20, statistics">
-    <title>Cricket Analyzer - Match Analyzer</title>
+    <title>Cricket Match Analyzer</title>
     <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.2/papaparse.min.js"></script>
 </head>
 <body class="classic-mode">
     <header>
         <nav class="navbar">
             <div class="logo">
-                <h1>Cricket Analyzer</h1>
+                <h1>Cricket Match Analyzer</h1>
             </div>
             <ul class="nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="contact.html">Contact</a></li>
+                <li><a href="index.html" class="home-icon">Home</a></li>
                 <li><a href="chase.html">Chase Analyzer</a></li>
                 <li><a href="match.html" class="active">Match Analyzer</a></li>
             </ul>
@@ -68,46 +62,44 @@
                     <option value="dark-mode">Dark Mode</option>
                 </select>
             </div>
+            <button class="hamburger">☰</button>
         </nav>
     </header>
-    <main class="container" id="match-analyzer">
-        <h2>Cricket Match Analyzer</h2>
-        <label for="score6ov">6 Overs Score/Wickets (e.g., 20/1):</label>
-        <input type="text" id="score6ov">
-        <label for="score10ov">10 Overs Score/Wickets (e.g., 50/2):</label>
-        <input type="text" id="score10ov">
-        <label for="score15ov">15 Overs Score/Wickets (e.g., 100/3):</label>
-        <input type="text" id="score15ov">
-        <label for="score20ov">20 Overs Score/Wickets (e.g., 150/4):</label>
-        <input type="text" id="score20ov">
+    <div class="container" id="match-analyzer">
+        <h2>Match Analyzer</h2>
+        <label for="score6ov">6th Over Score/Wickets (e.g., 20/1):</label>
+        <input type="text" id="score6ov" placeholder="Enter score/wickets for 6th over">
+        <label for="score10ov">10th Over Score/Wickets (e.g., 50/2):</label>
+        <input type="text" id="score10ov" placeholder="Enter score/wickets for 10th over">
+        <label for="score15ov">15th Over Score/Wickets (e.g., 80/3):</label>
+        <input type="text" id="score15ov" placeholder="Enter score/wickets for 15th over">
+        <label for="score20ov">20th Over Score/Wickets (e.g., 120/4):</label>
+        <input type="text" id="score20ov" placeholder="Enter score/wickets for 20th over">
         <div class="button-group">
-            <button id="matchSubmitBtn" onclick="processMatchInput()">Submit</button>
-            <button id="matchViewDetailsBtn" onclick="viewMatchFullMatchDetails()" disabled>View Full Details</button>
+            <button id="matchSubmitBtn" onclick="processMatchInput()">Analyze Match</button>
+            <button id="matchViewDetailsBtn" onclick="viewMatchFullDetails()" disabled>View Full Match Details</button>
         </div>
-        <div id="match-output">Loading data from GitHub...</div>
-    </main>
+        <div id="match-output">Loading data...</div>
+    </div>
     <div class="modal" id="matchYearFilterModal">
         <div class="modal-content">
-            <h2>Select Years</h2>
+            <span class="close-btn" onclick="closeMatchYearFilterModal()">&times;</span>
+            <h3>Filter by Year</h3>
             <div id="matchYearCheckboxes"></div>
-            <div class="modal-buttons">
-                <button onclick="applyMatchYearFilter()">OK</button>
-                <button onclick="closeMatchYearFilterModal()">Cancel</button>
-            </div>
+            <button onclick="applyMatchYearFilter()">Apply Filter</button>
         </div>
     </div>
     <div class="modal" id="matchFullDetailsModal">
         <div class="modal-content">
-            <h2>Full Match Details</h2>
+            <span class="close-btn" onclick="closeMatchFullDetailsModal()">&times;</span>
+            <h3>Full Match Details</h3>
             <div id="matchFullDetailsOutput"></div>
-            <div class="modal-buttons">
-                <button onclick="closeMatchFullDetailsModal()">Close</button>
-            </div>
         </div>
     </div>
     <footer>
-        <p>&copy; 2025 Cricket Analyzer. All rights reserved.</p>
+        <p>&copy; 2025 Cricket Match Analyzer. All rights reserved.</p>
     </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

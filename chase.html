@@ -42,23 +42,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Analyze T20 cricket chasing scenarios with historical match data.">
-    <meta name="keywords" content="cricket, chase, analyzer, T20, statistics">
-    <title>Cricket Analyzer - Chase Analyzer</title>
+    <title>Cricket Chase Analyzer</title>
     <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.2/papaparse.min.js"></script>
 </head>
 <body class="classic-mode">
     <header>
         <nav class="navbar">
             <div class="logo">
-                <h1>Cricket Analyzer</h1>
+                <h1>Cricket Chase Analyzer</h1>
             </div>
             <ul class="nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="contact.html">Contact</a></li>
+                <li><a href="index.html" class="home-icon">Home</a></li>
                 <li><a href="chase.html" class="active">Chase Analyzer</a></li>
                 <li><a href="match.html">Match Analyzer</a></li>
             </ul>
@@ -68,19 +62,18 @@
                     <option value="dark-mode">Dark Mode</option>
                 </select>
             </div>
+            <button class="hamburger">☰</button>
         </nav>
     </header>
-    <main class="container" id="chase-analyzer">
-        <h2>Cricket Chase Analyzer</h2>
-        <label for="scoreInput">Score/Wickets (e.g., 20/1):</label>
-        <input type="text" id="scoreInput">
+    <div class="container" id="chase-analyzer">
+        <h2>Chase Analyzer</h2>
         <label for="overSelect">Select Over:</label>
-        <select id="overSelect">
-            <option value="">-- Select Over --</option>
-        </select>
-        <label for="rangeSelect">20-Over Score Range (Optional):</label>
+        <select id="overSelect"></select>
+        <label for="scoreInput">Enter Score/Wickets (e.g., 20/1):</label>
+        <input type="text" id="scoreInput" placeholder="Enter score/wickets">
+        <label for="rangeSelect">Select 20-Over Score Range:</label>
         <select id="rangeSelect">
-            <option value="">-- All Ranges --</option>
+            <option value="">-- Select Range --</option>
             <option value="120-129">120-129</option>
             <option value="130-139">130-139</option>
             <option value="140-149">140-149</option>
@@ -92,33 +85,30 @@
             <option value="200+">200+</option>
         </select>
         <div class="button-group">
-            <button onclick="processChaseInput()">Submit</button>
+            <button id="submitBtn" onclick="processChaseInput()">Analyze Chase</button>
             <button id="viewDetailsBtn" onclick="viewChaseFullMatchDetails()" disabled>View Full Match Details</button>
         </div>
-        <div id="output">Loading data from GitHub...</div>
-    </main>
+        <div id="output">Loading data...</div>
+    </div>
     <div class="modal" id="yearFilterModal">
         <div class="modal-content">
-            <h2>Select Years</h2>
+            <span class="close-btn" onclick="closeChaseYearFilterModal()">&times;</span>
+            <h3>Filter by Year</h3>
             <div id="yearCheckboxes"></div>
-            <div class="modal-buttons">
-                <button onclick="applyChaseYearFilter()">OK</button>
-                <button onclick="closeChaseYearFilterModal()">Cancel</button>
-            </div>
+            <button onclick="applyChaseYearFilter()">Apply Filter</button>
         </div>
     </div>
     <div class="modal" id="fullDetailsModal">
         <div class="modal-content">
-            <h2>Full Match Details</h2>
+            <span class="close-btn" onclick="closeChaseFullDetailsModal()">&times;</span>
+            <h3>Full Match Details</h3>
             <div id="fullDetailsOutput"></div>
-            <div class="modal-buttons">
-                <button onclick="closeChaseFullDetailsModal()">Close</button>
-            </div>
         </div>
     </div>
     <footer>
-        <p>&copy; 2025 Cricket Analyzer. All rights reserved.</p>
+        <p>&copy; 2025 Cricket Chase Analyzer. All rights reserved.</p>
     </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

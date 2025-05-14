@@ -42,20 +42,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Cricket Analyzer: Analyze T20 cricket matches with historical data using our Chase and Match Analyzers.">
-    <meta name="keywords" content="cricket, T20, analyzer, chase, match, statistics">
     <title>Cricket Analyzer - Home</title>
     <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-        <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z88BMBRRMK"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-Z88BMBRRMK');
-</script>
 </head>
 <body class="classic-mode">
     <header>
@@ -64,11 +52,11 @@
                 <h1>Cricket Analyzer</h1>
             </div>
             <ul class="nav-links">
-                <li><a href="index.html" class="active">Home</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="contact.html">Contact</a></li>
+                <li><a href="index.html" class="home-icon active">Home</a></li>
                 <li><a href="chase.html">Chase Analyzer</a></li>
                 <li><a href="match.html">Match Analyzer</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
             </ul>
             <div class="theme-toggle">
                 <select id="themeSelect" onchange="toggleTheme()">
@@ -76,49 +64,33 @@
                     <option value="dark-mode">Dark Mode</option>
                 </select>
             </div>
+            <button class="hamburger">☰</button>
         </nav>
     </header>
-    <main class="container">
+    <div class="container">
         <section class="hero">
             <h2>Welcome to Cricket Analyzer</h2>
-            <p>Unlock the power of T20 cricket data with our advanced analyzers. Predict outcomes, explore historical matches, and gain insights like never before.</p>
-            <div class="button-group">
-                <a href="chase.html"><button>Try Chase Analyzer</button></a>
-                <a href="match.html"><button>Try Match Analyzer</button></a>
-            </div>
+            <p>Analyze cricket matches like never before with our advanced Chase and Match Analyzers.</p>
         </section>
         <section class="features">
-            <h3>Why Choose Us?</h3>
+            <h3>Explore Our Features</h3>
             <div class="feature-grid">
                 <div class="feature">
                     <h4>Chase Analyzer</h4>
-                    <p>Analyze chasing scenarios by entering scores and overs to see historical outcomes and probabilities.</p>
+                    <p>Track the progress of a chase at any over, compare historical matches, and predict outcomes based on past data.</p>
+                    <a href="chase.html" class="button">Try Chase Analyzer</a>
                 </div>
                 <div class="feature">
                     <h4>Match Analyzer</h4>
-                    <p>Compare match progress at key overs (6, 10, 15, 20) to find similar historical matches.</p>
-                </div>
-                <div class="feature">
-                    <h4>Global Data</h4>
-                    <p>Powered by comprehensive T20 match data, updated regularly for accuracy.</p>
+                    <p>Compare scores at key overs (6, 10, 15, 20) and find historical matches with similar patterns.</p>
+                    <a href="match.html" class="button">Try Match Analyzer</a>
                 </div>
             </div>
         </section>
-    </main>
+    </div>
     <footer>
-        <p>&copy; 2025 Cricket Analyzer. All rights reserved.</p>
+        <p>© 2025 Cricket Analyzer. All rights reserved.</p>
     </footer>
-    <script>
-        function toggleTheme() {
-            const theme = document.getElementById('themeSelect').value;
-            document.body.className = theme;
-            localStorage.setItem('theme', theme);
-        }
-        window.onload = function() {
-            const savedTheme = localStorage.getItem('theme') || 'classic-mode';
-            document.getElementById('themeSelect').value = savedTheme;
-            document.body.className = savedTheme;
-        };
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
