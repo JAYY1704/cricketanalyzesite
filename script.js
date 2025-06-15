@@ -66,7 +66,7 @@ function populateOverSelect() {
 }
 
 function loadChaseData() {
-    const url = 'https://raw.githubusercontent.com/jayy1704/cricanalyze/main/cricket_data.csv';
+    const url = 'https://raw.githubusercontent.com/jayy1704/cricanalyze/main/2020-2024 excel.csv';
     console.log(`Fetching Chase data from: ${url}`);
     
     fetch(url)
