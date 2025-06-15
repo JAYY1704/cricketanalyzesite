@@ -109,7 +109,7 @@ function loadChaseData() {
 }
 
 function loadMatchData() {
-    const url = 'https://raw.githubusercontent.com/jayy1704/cricanalyze/main/cricket_data.csv';
+    const url = 'https://raw.githubusercontent.com/jayy1704/cricanalyze/main/2020-2024 excel.csv';
     console.log(`Fetching Match data from: ${url}`);
     
     fetch(url)
